@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dispatch Lab · Courier reinforcement learning</title>
+  <meta name="description" content="A reproducible courier dispatch simulator comparing tabular Q-learning with greedy assignment.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2313263c'/%3E%3Cpath d='M8 24V8h16v16H8m8-16v16M8 16h16' fill='none' stroke='%23ff9454' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="./"><span class="brand-icon">⌘</span><span>Dispatch<span class="light">Lab</span></span></a>
+  <span class="project-label">REINFORCEMENT LEARNING / COURIER OPERATIONS</span>
+  <button id="guideButton" class="quiet">Design & assumptions ↗</button>
+</header>
+<main>
+  <div class="page-heading"><div><p class="eyebrow">THE DISPATCH EXPERIMENT</p><h1>Every assignment changes what’s next.</h1></div><span class="experiment-pill">10 × 10 grid <span> / </span> 3 couriers</span></div>
+  <section class="metrics" aria-label="Simulation statistics">
+    <div class="metric"><span>LEARNED · MEAN DELIVERY</span><strong id="learnedMean">—<small> sec</small></strong><p id="learnedCount">Waiting for first delivery</p></div>
+    <div class="metric"><span>GREEDY · MEAN DELIVERY</span><strong id="greedyMean">—<small> sec</small></strong><p id="greedyCount">Same orders. Independent fleet.</p></div>
+    <div class="metric"><span>MATCHED-ORDER ADVANTAGE</span><strong id="advantage">—<small> %</small></strong><p id="matchedCount">Positive means learned is faster</p></div>
+    <div class="metric"><span>EXPLORATION · EPSILON</span><strong id="epsilonValue">100<small> %</small></strong><p id="trainingCount">Untrained · random assignment</p></div>
+  </section>
+  <div class="workspace">
+    <section class="map-panel">
+      <div class="panel-heading"><div><h2>City in motion</h2><p id="mapSubtitle">Learned dispatcher · seed 42</p></div><div class="map-switch" role="group" aria-label="Visible fleet"><button id="showLearned" aria-pressed="true">Learned</button><button id="showGreedy" aria-pressed="false">Greedy</button></div></div>
+      <div class="map-surface"><div class="map-topline"><span id="weather">Clear conditions</span><span id="clock">00:00</span></div><svg id="cityMap" viewBox="0 0 660 540" role="img" aria-label="100-node city grid with courier positions and active delivery routes"></svg><div class="map-bottomline"><span><i class="restaurant-symbol"></i> Restaurant</span><span><i class="customer-symbol"></i> Customer</span><span class="road-legend">Road cost <i></i> low → high</span></div></div>
+      <div class="playback"><button id="playButton" class="primary">▶ Play</button><button id="stepButton" class="quiet">Next order →</button><label class="speed-label">Speed <select id="speed"><option value="1">1×</option><option value="5">5×</option><option value="20" selected>20×</option><option value="60">60×</option></select></label><button id="restartButton" class="quiet" title="Replay the same scenario while retaining the Q-table">↻ Replay</button></div>
+    </section>
+    <aside class="dispatch-panel">
+      <div class="panel-heading"><div><h2>The decision desk</h2><p>One order. Three possible futures.</p></div><span id="episodeStatus" class="badge">PAUSED</span></div>
+      <div class="order-card"><div class="order-title"><span id="orderNumber">NEXT ORDER</span><span id="decisionType">Ready to dispatch</span></div><div class="order-route"><div><span class="tiny-label">RESTAURANT</span><strong id="restaurantNode">—</strong></div><span class="route-arrow">→</span><div><span class="tiny-label">CUSTOMER</span><strong id="customerNode">—</strong></div></div><p id="orderDetail">Press play to start the shared order stream.</p></div>
+      <div class="courier-heading"><span>FLEET STATUS</span><span id="activeOrders">0 outstanding</span></div><div id="courierCards"></div>
+      <details class="decision-details" open><summary>Why this courier?</summary><div id="decisionExplanation">The policy starts with pure exploration. Watch it learn, or train a batch below.</div></details>
+      <div class="training-box"><div><h3>Teach the dispatcher</h3><span id="qStates">0 states visited</span></div><p>Train on fresh scenarios, then replay this city with what it learned.</p><label class="sr-only" for="policyMode">Learning mode</label><select id="policyMode"><option value="online">Explore & learn live</option><option value="frozen">Evaluate · epsilon 0</option></select><button id="trainButton" class="secondary">Train 200 episodes ↗</button><button id="loadPolicy" class="text-button">Load benchmark policy</button><progress id="trainingProgress" value="0" max="200" hidden aria-label="Training progress"></progress><span id="trainingStatus" role="status"></span></div>
+    </aside>
+  </div>
+  <section class="chart-panel"><div class="panel-heading"><div><h2>Does experience pay off?</h2><p id="chartDescription">Rolling mean over 20 matching order IDs · lower is better</p></div><div class="chart-controls"><label class="sr-only" for="chartMode">Chart type</label><select id="chartMode"><option value="live">Live deliveries</option><option value="training">Learning curve</option></select><span class="legend learned">Learned</span><span class="legend greedy">Greedy</span></div></div><div class="chart-wrap"><svg id="comparisonChart" viewBox="0 0 1120 210" role="img" aria-label="Delivery time comparison"></svg><p id="chartEmpty">The first comparison appears when both fleets deliver the same order.</p></div><div class="chart-footer"><span id="chartSummary">Identical demand and road conditions. No invented performance data.</span><button id="exportButton" class="quiet">Export results ↓</button></div></section>
+  <footer><span>DIJKSTRA ROUTING + TABULAR Q-LEARNING</span><span>Costs change. Speed stays constant. <button id="resetLearning" class="text-button">Reset learning</button></span></footer>
+</main>
+<dialog id="guideDialog"><div class="dialog-header"><h2>The experiment, explained</h2><button id="closeGuide" class="quiet" aria-label="Close design guide">✕</button></div><div id="guideContent"></div></dialog>
+<script type="module" src="ui.js"></script>
+</body></html>

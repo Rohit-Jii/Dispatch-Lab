@@ -1,0 +1,197 @@
+<h3>Dispatch Lab: a 30-minute design walkthrough</h3>
+<h3>0–3 minutes — Define the decision</h3>
+<p>We need to dispatch a new food order immediately while retaining capacity for later orders. An order contains a restaurant node, a distinct customer node, and a known preparation duration. Three identical couriers move on a 10×10, bidirectional street grid. Each courier executes its assigned orders sequentially.</p>
+<p>Separate the jobs: <strong>Dijkstra selects roads; Q-learning selects a courier.</strong> Shortest-path search is already exact for the current positive edge weights. Asking RL to learn street navigation would make the learning problem harder without helping the dispatch question.</p>
+<p>For each arrival, project each courier through its existing queue. Calculate the additional weighted route from its eventual free location to the restaurant and then to the customer. Estimate when this order would finish, including the courier&#39;s backlog and any food-prep wait. All three candidate plans use only currently observed costs, never future weather or future orders.</p>
+<p>The new assignment changes a courier&#39;s future position and availability. That makes this a sequential decision problem, not merely three independent shortest-path problems. Nevertheless, sequential structure alone does not prove RL will beat a good heuristic.</p>
+<h3>3–8 minutes — Work one order all the way through</h3>
+<p>Use zero-based <code>(x,y)</code> coordinates; node ID is <code>10*y+x</code>. Each edge is 100 m. Speed is 10 m/s, so an edge takes 10 seconds. For this isolated example only, all relevant edge costs are one unit.</p>
+<p>An order arrives at time 0: restaurant <code>(4,4)</code>, customer <code>(7,4)</code>, prep 40 s. The restaurant-to-customer route is three segments. A is busy and will be free in 90 seconds at <code>(3,4)</code>; B is idle at <code>(4,1)</code>; C is idle at <code>(9,4)</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Courier</th>
+<th align="right">Free in</th>
+<th align="right">Pickup travel</th>
+<th align="right">Delivery travel</th>
+<th align="right">Additional route cost</th>
+<th align="right">Delivery time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td align="right">90 s</td>
+<td align="right">10 s</td>
+<td align="right">30 s</td>
+<td align="right">4</td>
+<td align="right">130 s</td>
+</tr>
+<tr>
+<td>B</td>
+<td align="right">0 s</td>
+<td align="right">30 s</td>
+<td align="right">30 s</td>
+<td align="right">6</td>
+<td align="right">70 s</td>
+</tr>
+<tr>
+<td>C</td>
+<td align="right">0 s</td>
+<td align="right">50 s</td>
+<td align="right">30 s</td>
+<td align="right">8</td>
+<td align="right">80 s</td>
+</tr>
+</tbody></table>
+<p>Compute <code>ETA = max(now + freeIn + pickupTravel, created + prep) + deliveryTravel - created</code>.</p>
+<p>The greedy baseline chooses A because its <em>additional route cost</em> is smallest. Suppose the learner chooses B. Its pickup path is <code>(4,1) → (4,2) → (4,3) → (4,4)</code>, taking 30 seconds. B waits 10 seconds, not the full 40: food prep started at order creation. At second 40 B picks up the food. It travels <code>(4,4) → (5,4) → (6,4) → (7,4)</code> and delivers at second 70. A customer/restaurant pair is distinct, but a courier may already be at the restaurant, in which case the pickup leg has zero length.</p>
+<p>The simulator accrues one unfinished-order second each second. This order therefore contributes 70 order-seconds, or <strong>−0.70</strong> at a 100-second reward scale. Its route has no extra edges relative to Manhattan distance, so detour penalty is zero. Fleet balance and penalties for A&#39;s pre-existing work are separate; −0.70 is not the whole fleet&#39;s reward.</p>
+<p>Candidates are sorted by additional route cost: A, B, C. Relative ETA gaps are 60, 0, and 10 seconds. The three <code>(ETA-gap bin, availability bin)</code> pairs are <code>(1,1)</code>, <code>(0,0)</code>, <code>(0,0)</code>. Short prep and light traffic give table key <code>11-00-00:0:0</code>. Selecting B means action 1 in this canonical ordering; it does not mean courier B is always action 1.</p>
+<p>For an illustrative subsequent arrival, let the previous Q value be −2.00, observed base interval reward −0.50, previous potential −1.20, next potential −1.80, and highest next-state Q −1.50. The shaped reward is <code>−0.50 + 0.92*(−1.80) − (−1.20) = −0.956</code>. The target is <code>−0.956 + 0.92*(−1.50) = −2.336</code>. With alpha 0.12, Q becomes <code>−2 + 0.12*(−2.336 + 2) = −2.04032</code>. These values illustrate arithmetic, not a fabricated trained row.</p>
+<h3>8–12 minutes — State and actions</h3>
+<p>The full environment observes every courier&#39;s node, progress along its current edge, route, phase, FIFO queue, ready times, busy-time counters, the new order, and all current edge costs. Raw positions alone already permit one million three-courier combinations; queues and dynamic edge weights make the raw state vastly larger. A small physical map does not imply a small tabular state space.</p>
+<p>We deliberately use an approximate state. For each cost-ranked courier, encode:</p>
+<ul>
+<li>Its predicted delivery-time gap to the fastest candidate: <strong>0–10 s</strong>, <strong>over 10–60 s</strong>, or <strong>over 60 s</strong>.</li>
+<li>Time until free: <strong>idle</strong>, <strong>over 0–100 s</strong>, or <strong>over 100 s</strong>.</li>
+</ul>
+<p>Also encode prep <strong>at most 60 s / over 60 s</strong>, and current rush level <strong>below 0.5 / at least 0.5</strong>. Positions, endpoints, queues, prep, and costs enter through the route and ETA calculations. Cost ranking retains which candidate has cheaper travel. Availability is a workload proxy; actual busy-time balance is used in the reward, not directly stored in the table.</p>
+<p>This is at most <code>9^3 × 2 × 2 = 2,916</code> rows, each with three Q values. A sparse JavaScript <code>Map</code> stores visited rows. Identical couriers are interchangeable, so canonical cost ranking avoids relearning the same situation merely because courier labels swap.</p>
+<p>Action 0, 1, or 2 selects one of the cost-ranked candidates, then maps back to a physical courier. All actions are valid because busy couriers accept queued orders. There is no rejection, reassignment, or deliberate dispatch delay action.</p>
+<p>Aggregation hides absolute geography, exact backlogs, weather details, episode progress, and some history. The table is not an exact Markov representation. It cannot recognize that a particular neighborhood is likely to need a courier in 30 seconds unless that information is represented. The default demand is spatially uniform, so this demo mainly learns queue and capacity tradeoffs. It does not demonstrate hotspot anticipation.</p>
+<h3>12–17 minutes — Reward and learning</h3>
+<p>Decision epochs are arrivals; the interval to the next arrival varies. Let <code>N(t)</code> be unfinished accepted orders, <code>U_i(t)</code> each courier&#39;s busy-time fraction, and <code>E</code> extra route edges planned in the interval. Base reward is:</p>
+<pre><code>r = -sum_seconds N(t)/100
+    -0.03 * E
+    -0.0002 * sum_seconds (max_i U_i(t) - min_i U_i(t))
+</code></pre>
+<p>The first term includes queue waiting, travel, and prep waiting. Over a completely drained episode, <code>sum N(t)</code> equals the sum of all <code>deliveryTime - creationTime</code>. This is the user&#39;s definition of cold food; it is not a physical food-temperature model. Real food quality may instead depend heavily on time since cooking finished.</p>
+<p>An extra edge is a planned route&#39;s edge count minus its Manhattan minimum, separately for each pickup and delivery leg. A longer path around expensive roads still incurs this penalty, even if it is cheapest in generalized cost. Thus generalized route cost and delivery time are intentionally different objectives. RL cannot override Dijkstra&#39;s route choice. Busy fractions include prep waiting. The balance term is deliberately small and does not force equal work at the expense of delivery time.</p>
+<p>Assigning fleet reward to one action can be noisy: most unfinished orders came from earlier actions. Initial experiments without shaping did not improve reliably even after 4,000 episodes. We add earlier feedback via a potential:</p>
+<pre><code>Phi(observation) = - estimated remaining order-seconds / 100
+shapedReward = r + gamma*Phi(nextObservation) - Phi(observation)
+Q[s,a] += alpha * (shapedReward + gamma*max Q[next] - Q[s,a])
+</code></pre>
+<p>Estimate each already-assigned order&#39;s remaining delivery time under the current road snapshot. Sum across all queued orders. The arriving, not-yet-assigned order is excluded. Terminal potential and continuation Q are zero, after the last order is delivered. This gives credit sooner without changing the recorded base reward. The standard potential construction preserves the discounted objective in a fully observed MDP; our aggregated table still has approximation error. See <a href="https://people.eecs.berkeley.edu/~russell/papers/icml99-shaping.pdf">Ng, Harada &amp; Russell (1999)</a>.</p>
+<p>Use alpha <strong>0.12</strong>, gamma <strong>0.92 per arrival</strong>, and <code>epsilon = max(0.05, exp(-trainingDecisions/3500))</code>. Epsilon starts at 1; the first assignment is purely random. It is approximately 0.319 after 4,000 training decisions, 0.102 after 8,000, and reaches the 0.05 floor near 10,485. Exploration is uniform over all three actions. Exploitation selects the largest Q with seeded random tie-breaking. A table starts at zero; no heuristic supplies the chosen action.</p>
+<p>Gamma is per dispatch decision rather than per simulated second. This deliberately simple convention discounts future decision intervals equally even when their durations differ. It prioritizes nearer-term outcomes; it is not identical to minimizing undiscounted episode delivery time. The UI and benchmark report actual, undiscounted delivery metrics. A more careful continuous-time model could use duration-dependent discounting. Constant alpha and nonzero exploration support adaptation but do not provide an exact convergence guarantee. The basic tabular update follows <a href="https://www.incompleteideas.net/book/bookdraft2018mar21.pdf">Sutton &amp; Barto, section 6.5</a>.</p>
+<h3>17–22 minutes — Run the UI</h3>
+<p>Start at epsilon 1. Play at 20× and point out route dashes for pickup, solid delivery routes, changing road colors, square restaurants, hollow customer markers, and completed-delivery checkmarks. Each tick is one simulation second; interpolation animates movement smoothly. A courier waiting for prep remains in the restaurant/pickup phase, shown with a distinct waiting label.</p>
+<p>Pause at an arrival. The decision table shows all three candidates&#39; cost, free-in estimate, predicted delivery time, and Q at assignment. These estimates do not silently change after the decision. Toggle the displayed fleet to inspect greedy on the same exogenous scenario.</p>
+<p>Train 200 episodes in a Web Worker, keeping the interface responsive. The live episode pauses and then replays seed 42 with the updated table. Alternatively load the included 1,000-episode policy for a prepared talk; this explicitly switches to frozen evaluation, epsilon 0. A separate learning curve evaluates snapshots on fixed validation scenarios. It is not a chart of increasingly easy training orders.</p>
+<p>The top means use each policy&#39;s completed orders and show outstanding counts. They can have survivor bias mid-episode. The advantage and live chart instead use a <strong>contiguous prefix of order IDs delivered by both policies</strong>, including a slow earlier order before any later one. Each point is a rolling mean over up to 20 matched IDs; both policies use the same window. Every episode stops arrivals at 40 orders and drains all queues before its final mean.</p>
+<h3>22–26 minutes — Interpret the evidence</h3>
+<p>The final benchmark trains 1,000 episodes (40,000 assignments), evaluates checkpoints every 100 episodes on seeds 80000–80009, and then evaluates the final table on 30 fresh scenarios, seeds 91000–91029. Training seeds are 1000–1999. We keep the final checkpoint, not the best-looking validation checkpoint. The final table has 921 visited states. All evaluation freezes Q and uses epsilon 0. Each policy sees identical starts, orders, static road conditions, and timed weather, using an independent policy RNG.</p>
+<table>
+<thead>
+<tr>
+<th>Policy</th>
+<th align="right">Mean delivery time, final test</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Random assignment</td>
+<td align="right">301.65 s</td>
+</tr>
+<tr>
+<td>Cheapest additional route (requested greedy)</td>
+<td align="right">219.13 s</td>
+</tr>
+<tr>
+<td>Learned table</td>
+<td align="right">202.84 s</td>
+</tr>
+<tr>
+<td>Queue-aware minimum predicted ETA</td>
+<td align="right"><strong>170.76 s</strong></td>
+</tr>
+</tbody></table>
+<p>The learned policy improves on route-only greedy by <strong>16.29 seconds / 7.43%</strong>, winning 23 of 30 scenarios. An approximate paired 95% t confidence interval for the improvement is <strong>4.84–27.74 s</strong>, calculated across scenario means, not correlated individual orders. This interval covers variation in test demand for a single trained model; it does not measure variation across multiple training seeds.</p>
+<p>Validation improves from 293.50 s untrained to 212.38 s after 1,000 episodes, but fluctuates: 194.18 s at 200 episodes, 219.35 s at 300, and 193.08 s at 800. Do not claim monotonic improvement. The raw records and final table are included.</p>
+<p>The initial unshaped experiments used test seeds 90000–90029 and performed poorly (299.27 s after 600 episodes; 328.33 s after 4,000, versus greedy 243.30 s). After changing the credit assignment, final testing moved to the fresh 91000 range. These initial outcomes motivated an engineering change, not selection of a flattering final checkpoint.</p>
+<p><strong>Does RL earn its place?</strong> It demonstrates learning to improve over the specified route-only greedy policy. It has not earned production preference over the simple queue-aware ETA dispatcher. Keep that heuristic as the deployment candidate until repeated training runs, richer demand patterns, and robust held-out tests establish a useful advantage. Do not manufacture an improvement claim merely because RL was requested.</p>
+<h3>26–30 minutes — What the real platform adds</h3>
+<p>The assumption register is a separate deliverable. The most consequential future additions are:</p>
+<ul>
+<li>Spatial and time-dependent demand, restaurant clusters, and demand forecasts in state. Uniform demand cannot teach named-neighborhood reservation.</li>
+<li>Stochastic prep readiness, kitchen capacity, pickup handoff delays, and uncertainty-aware ETA estimates.</li>
+<li>Actual traffic-dependent travel speed, one-way roads, turn restrictions, closures, parking, buildings, and walking to doors. Replanning mid-trip needs careful treatment of the current edge.</li>
+<li>Batched orders, carrying capacity, pickup-before-dropoff constraints, deadlines, cancellation, acceptance, reassignment, and the option to delay or reject an assignment.</li>
+<li>Courier breaks, shifts, differing vehicles, availability, compensation, fatigue, and fairness measured across comparable working opportunities.</li>
+<li>Customer lateness percentiles and service-level violations, food age after readiness, wasted food, mileage, energy, and platform cost—not just mean time.</li>
+<li>Demand exceeding capacity, queue limits, fallback rules, stale observations, missing GPS, and dispatch latency.</li>
+<li>Logged-policy bias and counterfactual evaluation, multiple training seeds, temporal/geographic holdouts, distribution shift, shadow operation, and a controlled comparison against the strongest simple heuristic.</li>
+</ul>
+<p>Close with the decision boundary: routing solves the current graph; dispatch allocates future capacity. This simulator makes that distinction observable, and makes its performance claim falsifiable.</p>
+<h3>Complete assumption register</h3>
+<p>These are design choices for this implementation, not claims about a real platform. Values match the source and supplied benchmark. The isolated numeric example overrides road weights only to make the arithmetic transparent.</p>
+<h3>Geography and routes</h3>
+<ol>
+<li>Exactly 10 horizontal and 10 vertical streets, 100 intersection nodes, 180 undirected edges. No diagonals, boundaries that wrap, or disconnected components.</li>
+<li>Coordinates are zero-based <code>(x,y)</code> with y increasing down the displayed map. Node IDs are <code>10*y+x</code>.</li>
+<li>Every edge is 100 m. The city spans 900 m per side between outer nodes.</li>
+<li>Roads are bidirectional with equal costs in each direction. Every edge has strictly positive cost. There are no closures, turns, signals, parking, building entrances, or U-turn restrictions.</li>
+<li>Each road receives a static, seeded condition multiplier uniform on <code>[1,1.18)</code>. It does not wear or repair during an episode.</li>
+<li>Generalized edge cost, in normalized 100 m cost units, is <code>condition*(1+traffic+weather)</code>. It is not an ETA in seconds or monetary cost. Multiply by 100 to express equivalent weighted meters if desired.</li>
+<li>Cost snapshots update every 30 simulated seconds. Rush amplitude is <code>max(0,sin(2*pi*t/900))</code>, sampled at the snapshot time, giving a repeating 15-minute demonstration cycle.</li>
+<li>Central-road traffic is <code>1.8*rush</code>, other-road traffic <code>0.25*rush</code>. An edge is central when its lower-ID endpoint has x in 3–6 or y in 4–5. This is a simple fixed corridor definition, not observed city traffic.</li>
+<li>Every 300 s beginning at 180 s, there is a 35% independent chance of one weather event. Duration is an integer 90–180 s, strength uniform <code>[0.6,1.3)</code>, center column an integer 0–7. Edges whose midpoint lies within two columns of that center receive the extra multiplier term. Weather effect begins/ends on the sampled cost snapshot, potentially up to 29 s after its scheduled boundary.</li>
+<li>Weather is generated through last arrival plus 20,000 s. No overlapping weather events arise with this spacing and duration. There is no action-dependent congestion or effect from the three couriers on road conditions.</li>
+<li>Dijkstra minimizes summed current positive generalized edge costs. Tie handling is deterministic by node scan order. It caches one shortest-path tree per origin per cost snapshot.</li>
+<li>The active leg remains fixed until its destination. A fresh route is planned on starting each pickup and each delivery leg, including after queued work. There is no mid-leg rerouting. Maps may change color while a courier follows an earlier route.</li>
+<li>Candidate plans use the current cost snapshot for both legs and for forecasting queued work. Future weather, future rush values, and future orders are not exposed to the policy, although the simulator has pre-generated them for reproducibility.</li>
+</ol>
+<h3>Couriers and movement</h3>
+<ol start="14">
+<li>Exactly three identical couriers start at independently uniform random nodes. Starting on the same node is allowed. Starts are the same for every policy on the same scenario.</li>
+<li>Speed is exactly 10 m/s (36 km/h), constant in time and equal for all couriers, giving 10 s per edge. This is a compressed demonstration parameter, not a calibrated bicycle model.</li>
+<li>Traffic/weather affect route <em>cost</em>, not physical speed. They can increase time indirectly by causing a longer chosen route. Modeling actual traffic delay requires changing this assumption.</li>
+<li>A courier&#39;s operational phases are idle, traveling to pickup, waiting at pickup for prep, and traveling to delivery. Prep waiting is a substate of restaurant service in the user&#39;s three-state description; it is not availability.</li>
+<li>A busy courier can accept any number of queued orders. FIFO is strict. No reassignment, queue reordering, rejection, dispatch delay, or batching. A courier carries one order at a time and completes it before starting the next pickup.</li>
+<li>Idle couriers stay at their last delivery location. No depot return or proactive repositioning. There are no breaks, shifts, fatigue, heterogeneous vehicles, acceptance decisions, or failed deliveries.</li>
+<li>Pickup and dropoff service themselves are instantaneous once ready/at the node. Only the prep wait takes time. A courier already at a restaurant can wait/pick up without traversing an edge.</li>
+<li>Busy utilization includes travel and prep waiting; it excludes idle time. Balance compares cumulative busy fractions since episode start, not order counts, pay, or historical workload from earlier episodes.</li>
+<li>Exact node/edge-progress and availability estimates are observable. No GPS error, communication delay, uncertain motion, or stale state.</li>
+</ol>
+<h3>Orders and time</h3>
+<ol start="23">
+<li>An episode has 40 orders. The first arrives at t=0. Subsequent gaps are <code>max(1,round(Exponential(mean=55 seconds)))</code>; this is a discrete approximation to Poisson arrivals with no simultaneous arrivals.</li>
+<li>Restaurants are uniform across 100 nodes. Customers are uniform across the other 99 nodes. Orders are independent; a restaurant or customer node may recur. No persistent restaurant identity, capacity, catchment, or clustered demand.</li>
+<li>Prep is an independent uniform integer from 20 through 100 s inclusive, starts at order creation, and is known exactly to both dispatchers. There is no shared kitchen bottleneck.</li>
+<li>Food readiness persists until pickup. No spoilage, expiry, cancellation, order rejection, or abandonment. Every accepted order must eventually be delivered.</li>
+<li>The new order is assigned immediately on arrival. Unfinished work remains in courier queues even after arrivals stop. Both policies drain completely before final episode scoring.</li>
+<li>Simulation uses integer one-second ticks. Arrivals occur after movement/completions at the same timestamp, so a courier just freed at that timestamp is available for the new order. The t=0 order is assigned during initialization.</li>
+<li>Physical deliveries are never delayed for a cosmetic animation. Food waits only until its actual ready time; the UI may therefore show no prep pause if the courier arrives late.</li>
+<li>The engine has a 200,000-second guard for a non-draining episode; it throws rather than silently treating unfinished orders as completed or omitting them from a final result.</li>
+</ol>
+<h3>Dispatcher, state, and objective</h3>
+<ol start="31">
+<li>Route-only greedy chooses the smallest <em>additional</em> weighted pickup-plus-delivery path from the courier&#39;s projected free location, ignoring backlog duration and prep in its ranking. It is deliberately the requested naive comparator, not a claim of best classical dispatch. Equal costs choose the smaller courier ID.</li>
+<li>The stronger diagnostic heuristic chooses minimum predicted creation-to-delivery ETA, including queue and prep; cost order breaks ETA ties. Random assignment is another offline control.</li>
+<li>The Q policy chooses cost-ranked actions mapped back to courier IDs. No ETA minimization, fallback heuristic, action mask, or manually preferred courier is hidden inside exploitation.</li>
+<li>State bins are the ETA gap <code>[0,10]</code>, <code>(10,60]</code>, <code>(60,infinity)</code> and free-in <code>0</code>, <code>(0,100]</code>, <code>(100,infinity)</code> for each ranked courier, plus short/long prep at 60 s and rush below/above 0.5. Maximum 2,916 rows / 8,748 action values. Continuous variables and explicit node coordinates are aggregated away.</li>
+<li>State aggregation and omission of episode horizon, exact queues, absolute geography, and utilization history make this an approximate, partly observable dispatch model. Classical tabular convergence guarantees do not directly apply.</li>
+<li>Base delay reward is <code>-0.01</code> per unfinished order per simulated second. At episode drain its undiscounted delay component equals <code>-sum(deliveryTime-creationTime)/100</code> exactly.</li>
+<li>Each extra planned edge relative to Manhattan distance costs 0.03 reward units, equivalent to 3 order-seconds. Both pickup and delivery legs count. Direct paths can still incur high road cost without a detour penalty. This measures physical extra distance, not extra generalized cost relative to Dijkstra&#39;s optimum.</li>
+<li>Balance reward is <code>-0.0002*(max utilization-min utilization)</code> per second, using cumulative utilization at the start of that tick. It is a deliberately minor term; no minimum/maximum utilization guarantee is enforced.</li>
+<li>Potential shaping uses negative predicted remaining order-seconds divided by 100. It uses current route/queue forecasts; excludes the new unassigned order; and is zero terminally. It changes learning feedback, not exported base reward totals. ETA information enters shaping, but does not select actions.</li>
+<li>Learning uses <code>r + 0.92*Phi(next) - Phi(current)</code> and the usual Q bootstrap, alpha 0.12, gamma 0.92 per arrival. Final transition includes the complete drain with no bootstrap. There is no extra discount within an arrival interval. Discounted learning and undiscounted reporting are intentionally distinguished.</li>
+<li>All Q values initialize at zero. Unvisited states have three equal zero values. Epsilon starts at 1, decays as <code>exp(-n/3500)</code>, and bottoms at 0.05, where n counts learning assignments across episodes. Random action and tied maxima are uniform and seeded.</li>
+<li>One transition is updated at the next order arrival, or once at terminal drain. Reward includes effects on all pending orders, not just the newest order. There is no experience replay, neural network, planning search, or eligibility trace.</li>
+<li>Training ends at a chosen episode count, not an automatic convergence test. Performance can fluctuate and is not guaranteed to beat a baseline in every episode.</li>
+</ol>
+<h3>Experiments and interface</h3>
+<ol start="44">
+<li>Mulberry32 provides deterministic pseudorandom numbers. Environment randomness and action randomness use separate seeds, so different choices cannot consume or change the shared order/weather stream.</li>
+<li>The demo scenario is seed 42. Replay resets positions, demand, time, counters, and weather, retaining the Q table. Online mode continues training; frozen mode sets epsilon 0 and never updates Q. Partially replayed episodes retain completed updates but discard their last unfinished transition; only drained episodes increment the completed-episode count.</li>
+<li>Batch training pauses the demo, trains 200 episodes in a worker, then replays seed 42. Batch scenario seed is <code>1000 + completedTrainingEpisodes</code>. The table is session memory; refreshing starts over. Export saves it, and the bundled benchmark-policy button loads the supplied artifact. Arbitrary JSON policy import is not implemented.</li>
+<li>Training chart points evaluate frozen tables at epsilon 0. Browser batches use six fixed validation seeds 80000–80005. The included CLI benchmark uses ten, 80000–80009. Curves from different validation sets are not merged. These validation runs never learn.</li>
+<li>Final benchmark uses one training run, 1,000 episodes, seeds 1000–1999, and the final checkpoint. Final fresh tests are 91000–91029, all disjoint from training, validation, and earlier development tests. Repeated training runs and robustness to changed demand settings have not been established.</li>
+<li>The reported 95% interval is the paired t interval across 30 independent scenario means: mean difference ± 2.045*sampleSD/sqrt(30). It measures uncertainty across evaluation scenarios conditional on one trained policy. Forty orders within a scenario are not treated as independent statistical samples.</li>
+<li>Top-line live delivery means include completed orders only and show outstanding counts. The comparative advantage/rolling chart use a contiguous prefix completed by both policies, sorted by order ID, with a 20-order rolling window. They are descriptive during a run; final drain removes completion censoring.</li>
+<li>Every animation compares independent three-courier fleets, not two dispatchers sharing couriers. Once one fleet finishes, its state stops advancing; the other continues until drained. Displayed global clock is the larger fleet time.</li>
+<li>Speed options are 1×, 5×, 20×, and 60×. They change only playback wall time, not physics, random draws, or training rewards. Long dropped browser frames are capped to 0.25 s wall time so the demo slows rather than jumping uncontrollably. Hidden tabs stop playback advancement.</li>
+<li>The map interpolates between one-second physics updates and fans out overlapping stationary markers for visibility; these small display offsets do not change simulated position. Delivery badges persist for 25 simulated seconds.</li>
+<li>The application is a single static page with local browser computation and no customer/courier personal data, backend, account database, or external dispatch integration. Optional Google Fonts affects appearance only. The optional experimental WebMCP playback interface is feature-detected; ordinary controls are always available.</li>
+<li>The simulator is an educational prototype. The values, rewards, weather, horizon, and capacity are synthetic, not calibrated operating parameters. No claim of real-world improvement or production readiness follows from the synthetic benchmark.</li>
+</ol>

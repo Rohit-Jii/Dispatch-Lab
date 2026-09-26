@@ -1,0 +1,47 @@
+// Development-only browser smoke test; Playwright comes from the desktop runtime.
+import {createRequire} from 'node:module';
+import {mkdir} from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const require=createRequire(import.meta.url);
+const {chromium}=require('C:/Users/Rohit/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+await mkdir('qa',{recursive:true});
+const browser=await chromium.launch({executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',headless:true});
+try {
+  const page=await browser.newPage({viewport:{width:1440,height:1100}});
+  const errors=[];page.on('pageerror',error=>errors.push(error.message));
+  await page.goto('http://127.0.0.1:4173');
+  await page.locator('#courierCards .courier-card').first().waitFor();
+  assert.equal(await page.locator('#courierCards .courier-card').count(),3);
+  await page.locator('#playButton').click();await page.waitForTimeout(1200);
+  await page.locator('#playButton').click();
+  const paused=await page.locator('#clock').textContent();
+  await page.waitForTimeout(500);assert.equal(await page.locator('#clock').textContent(),paused);
+  await page.locator('#speed').selectOption('60');
+  await page.locator('#stepButton').click();
+  assert.notEqual(await page.locator('#clock').textContent(),paused);
+  await page.locator('#showGreedy').click();assert.match(await page.locator('#mapSubtitle').textContent(),/Greedy/);
+  await page.locator('#showLearned').click();
+  await page.locator('#trainButton').click();
+  await page.waitForFunction(()=>document.querySelector('#trainingStatus').textContent.startsWith('Completed'),{},{timeout:120000});
+  assert.match(await page.locator('#trainingCount').textContent(),/8,00/);
+  await page.locator('#loadPolicy').click();
+  await page.waitForFunction(()=>document.querySelector('#trainingStatus').textContent.startsWith('Loaded'));
+  assert.equal(await page.locator('#policyMode').inputValue(),'frozen');
+  for(let i=0;i<40;i++) await page.locator('#stepButton').click();
+  assert.equal(await page.locator('#episodeStatus').textContent(),'COMPLETE');
+  assert.match(await page.locator('#matchedCount').textContent(),/40 matching/);
+  await page.locator('#chartMode').selectOption('live');
+  await page.screenshot({path:'qa/desktop.png',fullPage:true});
+  const downloadPromise=page.waitForEvent('download');await page.locator('#exportButton').click();
+  const download=await downloadPromise;assert.equal(download.suggestedFilename(),'dispatch-lab-results.json');
+  await page.locator('#guideButton').click();await page.locator('#guideContent h3').first().waitFor();
+  await page.keyboard.press('Escape');assert.equal(await page.locator('#guideDialog').isVisible(),false);
+  await page.locator('#restartButton').click();await page.locator('#chartMode').selectOption('training');
+  await page.screenshot({path:'qa/learning-curve.png',fullPage:true});
+  await page.setViewportSize({width:390,height:844});await page.screenshot({path:'qa/mobile.png',fullPage:true});
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));
+  await page.evaluate(()=>document.documentElement.style.fontSize='32px');
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));
+  assert.deepEqual(errors,[]);
+  console.log(JSON.stringify({passed:true,checks:['play/pause','speed','next order','fleet toggle','training worker','policy load','complete paired episode','export','guide dialog','mobile','200% text'],screenshots:['qa/desktop.png','qa/learning-curve.png','qa/mobile.png']}));
+} finally {await browser.close();}

@@ -1,0 +1,2025 @@
+{
+  "settings": {
+    "size": 10,
+    "couriers": 3,
+    "edgeMeters": 100,
+    "speed": 10,
+    "meanArrivalSeconds": 55,
+    "ordersPerEpisode": 40,
+    "costUpdateSeconds": 30,
+    "alpha": 0.12,
+    "gamma": 0.92,
+    "epsilonFloor": 0.05,
+    "epsilonDecay": 3500,
+    "delayScale": 100,
+    "detourPenalty": 0.03,
+    "balancePenaltyPerSecond": 0.0002
+  },
+  "trainingEpisodes": 1000,
+  "history": [
+    {
+      "episode": 0,
+      "epsilon": 1,
+      "states": 0,
+      "learned": 293.4975,
+      "greedy": 230.73499999999999,
+      "eta": 165.64000000000001,
+      "random": 282.5575
+    },
+    {
+      "episode": 100,
+      "epsilon": 0.31890655732397044,
+      "states": 549,
+      "learned": 198.97,
+      "greedy": 230.73499999999999,
+      "eta": 165.64000000000001,
+      "random": 282.5575
+    },
+    {
+      "episode": 200,
+      "epsilon": 0.10170139230422684,
+      "states": 697,
+      "learned": 194.1825,
+      "greedy": 230.73499999999999,
+      "eta": 165.64000000000001,
+      "random": 282.5575
+    },
+    {
+      "episode": 300,
+      "epsilon": 0.05,
+      "states": 766,
+      "learned": 219.34499999999997,
+      "greedy": 230.73499999999999,
+      "eta": 165.64000000000001,
+      "random": 282.5575
+    },
+    {
+      "episode": 400,
+      "epsilon": 0.05,
+      "states": 805,
+      "learned": 200.1675,
+      "greedy": 230.73499999999999,
+      "eta": 165.64000000000001,
+      "random": 282.5575
+    },
+    {
+      "episode": 500,
+      "epsilon": 0.05,
+      "states": 835,
+      "learned": 204.11499999999998,
+      "greedy": 230.73499999999999,
+      "eta": 165.64000000000001,
+      "random": 282.5575
+    },
+    {
+      "episode": 600,
+      "epsilon": 0.05,
+      "states": 857,
+      "learned": 201,
+      "greedy": 230.73499999999999,
+      "eta": 165.64000000000001,
+      "random": 282.5575
+    },
+    {
+      "episode": 700,
+      "epsilon": 0.05,
+      "states": 874,
+      "learned": 207.17000000000002,
+      "greedy": 230.73499999999999,
+      "eta": 165.64000000000001,
+      "random": 282.5575
+    },
+    {
+      "episode": 800,
+      "epsilon": 0.05,
+      "states": 889,
+      "learned": 193.07750000000001,
+      "greedy": 230.73499999999999,
+      "eta": 165.64000000000001,
+      "random": 282.5575
+    },
+    {
+      "episode": 900,
+      "epsilon": 0.05,
+      "states": 902,
+      "learned": 206.70250000000001,
+      "greedy": 230.73499999999999,
+      "eta": 165.64000000000001,
+      "random": 282.5575
+    },
+    {
+      "episode": 1000,
+      "epsilon": 0.05,
+      "states": 921,
+      "learned": 212.3825,
+      "greedy": 230.73499999999999,
+      "eta": 165.64000000000001,
+      "random": 282.5575
+    }
+  ],
+  "summary": {
+    "learned": 202.8383333333333,
+    "greedy": 219.12833333333327,
+    "eta": 170.7575,
+    "random": 301.64583333333337,
+    "pairedImprovementSeconds": 16.29,
+    "confidence95": [
+      4.8395498576716705,
+      27.740450142328328
+    ],
+    "wins": 23,
+    "testSeeds": 30
+  },
+  "heldOut": [
+    {
+      "seed": 91000,
+      "learned": {
+        "meanDelivery": 301.4,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2157,
+        "reward": -120.88006841444457,
+        "orderSeconds": 12056,
+        "extraEdges": 6,
+        "utilization": [
+          0.8762169680111266,
+          0.7862772369031061,
+          0.8043579044969865
+        ],
+        "seed": 91000
+      },
+      "greedy": {
+        "meanDelivery": 297.5,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2361,
+        "reward": -119.39256560510236,
+        "orderSeconds": 11900,
+        "extraEdges": 6,
+        "utilization": [
+          0.8432867429055485,
+          0.5628970775095299,
+          0.6272765777213045
+        ],
+        "seed": 91000
+      },
+      "eta": {
+        "meanDelivery": 261.95,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2147,
+        "reward": -105.04840308163196,
+        "orderSeconds": 10478,
+        "extraEdges": 4,
+        "utilization": [
+          0.8705170004657662,
+          0.7242664182580345,
+          0.8914764788076386
+        ],
+        "seed": 91000
+      },
+      "random": {
+        "meanDelivery": 491.1,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2647,
+        "reward": -197.05514479294308,
+        "orderSeconds": 19644,
+        "extraEdges": 10,
+        "utilization": [
+          0.7922176048356631,
+          0.6021911598035512,
+          0.8726860596902153
+        ],
+        "seed": 91000
+      }
+    },
+    {
+      "seed": 91001,
+      "learned": {
+        "meanDelivery": 185.475,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2529,
+        "reward": -74.36051938827157,
+        "orderSeconds": 7419,
+        "extraEdges": 2,
+        "utilization": [
+          0.708185053380783,
+          0.6967180703835508,
+          0.7734282325029656
+        ],
+        "seed": 91001
+      },
+      "greedy": {
+        "meanDelivery": 214.125,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2605,
+        "reward": -85.95337157351806,
+        "orderSeconds": 8565,
+        "extraEdges": 4,
+        "utilization": [
+          0.5785028790786948,
+          0.7324376199616123,
+          0.5520153550863723
+        ],
+        "seed": 91001
+      },
+      "eta": {
+        "meanDelivery": 168.1,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2562,
+        "reward": -67.44509023198101,
+        "orderSeconds": 6724,
+        "extraEdges": 2,
+        "utilization": [
+          0.8645589383294301,
+          0.6522248243559718,
+          0.5831381733021077
+        ],
+        "seed": 91001
+      },
+      "random": {
+        "meanDelivery": 248.3,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2622,
+        "reward": -99.5569811503168,
+        "orderSeconds": 9932,
+        "extraEdges": 2,
+        "utilization": [
+          0.7120518688024409,
+          0.7074752097635393,
+          0.7322654462242563
+        ],
+        "seed": 91001
+      }
+    },
+    {
+      "seed": 91002,
+      "learned": {
+        "meanDelivery": 199.75,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2203,
+        "reward": -80.2576000578854,
+        "orderSeconds": 7990,
+        "extraEdges": 8,
+        "utilization": [
+          0.7453472537448933,
+          0.7571493418066273,
+          0.9119382660009079
+        ],
+        "seed": 91002
+      },
+      "greedy": {
+        "meanDelivery": 325.1,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2331,
+        "reward": -130.6102019439075,
+        "orderSeconds": 13004,
+        "extraEdges": 8,
+        "utilization": [
+          0.9927069927069927,
+          0.8515658515658515,
+          0.2552552552552553
+        ],
+        "seed": 91002
+      },
+      "eta": {
+        "meanDelivery": 157.725,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2122,
+        "reward": -63.27858972522417,
+        "orderSeconds": 6309,
+        "extraEdges": 4,
+        "utilization": [
+          0.8435438265786993,
+          0.8195098963242224,
+          0.7690857681432611
+        ],
+        "seed": 91002
+      },
+      "random": {
+        "meanDelivery": 409.225,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2400,
+        "reward": -164.27657728920178,
+        "orderSeconds": 16369,
+        "extraEdges": 8,
+        "utilization": [
+          0.9720833333333333,
+          0.8975,
+          0.38666666666666666
+        ],
+        "seed": 91002
+      }
+    },
+    {
+      "seed": 91003,
+      "learned": {
+        "meanDelivery": 177.175,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2388,
+        "reward": -71.21906755891865,
+        "orderSeconds": 7087,
+        "extraEdges": 8,
+        "utilization": [
+          0.7579564489112228,
+          0.6243718592964824,
+          0.8036013400335008
+        ],
+        "seed": 91003
+      },
+      "greedy": {
+        "meanDelivery": 203.875,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2231,
+        "reward": -81.85450602156646,
+        "orderSeconds": 8155,
+        "extraEdges": 2,
+        "utilization": [
+          0.5809054235768714,
+          0.7951591214701927,
+          0.6203496190049306
+        ],
+        "seed": 91003
+      },
+      "eta": {
+        "meanDelivery": 159.7,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2298,
+        "reward": -64.31772653142627,
+        "orderSeconds": 6388,
+        "extraEdges": 8,
+        "utilization": [
+          0.6479547432550044,
+          0.6557876414273281,
+          0.845082680591819
+        ],
+        "seed": 91003
+      },
+      "random": {
+        "meanDelivery": 348.825,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2779,
+        "reward": -140.07665740750377,
+        "orderSeconds": 13953,
+        "extraEdges": 10,
+        "utilization": [
+          0.5296869377473912,
+          0.9632961496941346,
+          0.42533285354444045
+        ],
+        "seed": 91003
+      }
+    },
+    {
+      "seed": 91004,
+      "learned": {
+        "meanDelivery": 181.95,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2823,
+        "reward": -72.95117337654204,
+        "orderSeconds": 7278,
+        "extraEdges": 2,
+        "utilization": [
+          0.5437477860432164,
+          0.7435352461919943,
+          0.610343606092809
+        ],
+        "seed": 91004
+      },
+      "greedy": {
+        "meanDelivery": 191.75,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2753,
+        "reward": -77.07801937115572,
+        "orderSeconds": 7670,
+        "extraEdges": 2,
+        "utilization": [
+          0.5684707591718126,
+          0.6345804576825281,
+          0.4478750454050127
+        ],
+        "seed": 91004
+      },
+      "eta": {
+        "meanDelivery": 148.775,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2673,
+        "reward": -59.70644188094994,
+        "orderSeconds": 5951,
+        "extraEdges": 2,
+        "utilization": [
+          0.607931163486719,
+          0.557052001496446,
+          0.6621773288439955
+        ],
+        "seed": 91004
+      },
+      "random": {
+        "meanDelivery": 229.95,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2785,
+        "reward": -92.31631225024745,
+        "orderSeconds": 9198,
+        "extraEdges": 2,
+        "utilization": [
+          0.39138240574506283,
+          0.7529622980251347,
+          0.8337522441651706
+        ],
+        "seed": 91004
+      }
+    },
+    {
+      "seed": 91005,
+      "learned": {
+        "meanDelivery": 248.475,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2125,
+        "reward": -99.6015498778223,
+        "orderSeconds": 9939,
+        "extraEdges": 4,
+        "utilization": [
+          0.8009411764705883,
+          0.8263529411764706,
+          0.8376470588235294
+        ],
+        "seed": 91005
+      },
+      "greedy": {
+        "meanDelivery": 271.275,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2347,
+        "reward": -108.7341147502376,
+        "orderSeconds": 10851,
+        "extraEdges": 2,
+        "utilization": [
+          0.8184916915210908,
+          0.4610140605027695,
+          0.7937792927141031
+        ],
+        "seed": 91005
+      },
+      "eta": {
+        "meanDelivery": 238.375,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2141,
+        "reward": -95.5605242589256,
+        "orderSeconds": 9535,
+        "extraEdges": 2,
+        "utilization": [
+          0.8710882765063055,
+          0.8355908453993461,
+          0.7375058383932742
+        ],
+        "seed": 91005
+      },
+      "random": {
+        "meanDelivery": 384.325,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2723,
+        "reward": -154.20516430075364,
+        "orderSeconds": 15373,
+        "extraEdges": 10,
+        "utilization": [
+          0.5828130738156445,
+          0.9199412412780023,
+          0.5780389276533235
+        ],
+        "seed": 91005
+      }
+    },
+    {
+      "seed": 91006,
+      "learned": {
+        "meanDelivery": 174.675,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2712,
+        "reward": -70.06230126686538,
+        "orderSeconds": 6987,
+        "extraEdges": 0,
+        "utilization": [
+          0.637905604719764,
+          0.7942477876106194,
+          0.5921828908554573
+        ],
+        "seed": 91006
+      },
+      "greedy": {
+        "meanDelivery": 176.625,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2718,
+        "reward": -70.81970543230628,
+        "orderSeconds": 7065,
+        "extraEdges": 0,
+        "utilization": [
+          0.6276674025018396,
+          0.6501103752759382,
+          0.48712288447387786
+        ],
+        "seed": 91006
+      },
+      "eta": {
+        "meanDelivery": 155.45,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2712,
+        "reward": -62.460302161675685,
+        "orderSeconds": 6218,
+        "extraEdges": 2,
+        "utilization": [
+          0.6360619469026548,
+          0.5553097345132744,
+          0.782448377581121
+        ],
+        "seed": 91006
+      },
+      "random": {
+        "meanDelivery": 225.825,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2732,
+        "reward": -90.70669573017017,
+        "orderSeconds": 9033,
+        "extraEdges": 4,
+        "utilization": [
+          0.6603221083455344,
+          0.6343338213762811,
+          0.736822840409956
+        ],
+        "seed": 91006
+      }
+    },
+    {
+      "seed": 91007,
+      "learned": {
+        "meanDelivery": 208.625,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2088,
+        "reward": -83.71417678139687,
+        "orderSeconds": 8345,
+        "extraEdges": 2,
+        "utilization": [
+          0.8117816091954023,
+          0.5330459770114943,
+          0.9621647509578544
+        ],
+        "seed": 91007
+      },
+      "greedy": {
+        "meanDelivery": 211.025,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2088,
+        "reward": -84.5374985418553,
+        "orderSeconds": 8441,
+        "extraEdges": 0,
+        "utilization": [
+          0.7969348659003831,
+          0.5953065134099617,
+          0.6537356321839081
+        ],
+        "seed": 91007
+      },
+      "eta": {
+        "meanDelivery": 153.05,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2088,
+        "reward": -61.389613529113,
+        "orderSeconds": 6122,
+        "extraEdges": 2,
+        "utilization": [
+          0.764367816091954,
+          0.7595785440613027,
+          0.7849616858237548
+        ],
+        "seed": 91007
+      },
+      "random": {
+        "meanDelivery": 219.3,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2088,
+        "reward": -87.94207232531926,
+        "orderSeconds": 8772,
+        "extraEdges": 2,
+        "utilization": [
+          0.9190613026819924,
+          0.8299808429118773,
+          0.7270114942528736
+        ],
+        "seed": 91007
+      }
+    },
+    {
+      "seed": 91008,
+      "learned": {
+        "meanDelivery": 219.7,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2467,
+        "reward": -88.28889508647465,
+        "orderSeconds": 8788,
+        "extraEdges": 6,
+        "utilization": [
+          0.7417916497770571,
+          0.8301580867450344,
+          0.713417105796514
+        ],
+        "seed": 91008
+      },
+      "greedy": {
+        "meanDelivery": 277.7,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2619,
+        "reward": -111.30577600059857,
+        "orderSeconds": 11108,
+        "extraEdges": 2,
+        "utilization": [
+          0.7510500190912562,
+          0.6494845360824743,
+          0.5513554791905307
+        ],
+        "seed": 91008
+      },
+      "eta": {
+        "meanDelivery": 183.125,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2358,
+        "reward": -73.4783487482233,
+        "orderSeconds": 7325,
+        "extraEdges": 4,
+        "utilization": [
+          0.7955894826123834,
+          0.7752332485156913,
+          0.7417302798982188
+        ],
+        "seed": 91008
+      },
+      "random": {
+        "meanDelivery": 297.95,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2589,
+        "reward": -119.60119996296005,
+        "orderSeconds": 11918,
+        "extraEdges": 10,
+        "utilization": [
+          0.8037852452684434,
+          0.7076091154886056,
+          0.791039011201236
+        ],
+        "seed": 91008
+      }
+    },
+    {
+      "seed": 91009,
+      "learned": {
+        "meanDelivery": 240.1,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2324,
+        "reward": -96.33869411697745,
+        "orderSeconds": 9604,
+        "extraEdges": 6,
+        "utilization": [
+          0.6949225473321858,
+          0.8820998278829604,
+          0.7762478485370051
+        ],
+        "seed": 91009
+      },
+      "greedy": {
+        "meanDelivery": 206.575,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2354,
+        "reward": -83.25115095354579,
+        "orderSeconds": 8263,
+        "extraEdges": 10,
+        "utilization": [
+          0.3109600679694138,
+          0.7523364485981309,
+          0.9439252336448598
+        ],
+        "seed": 91009
+      },
+      "eta": {
+        "meanDelivery": 160.675,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2293,
+        "reward": -64.69091308346259,
+        "orderSeconds": 6427,
+        "extraEdges": 12,
+        "utilization": [
+          0.7767117313563018,
+          0.6969036197121675,
+          0.7514173571740078
+        ],
+        "seed": 91009
+      },
+      "random": {
+        "meanDelivery": 255.3,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2429,
+        "reward": -102.5820156304202,
+        "orderSeconds": 10212,
+        "extraEdges": 8,
+        "utilization": [
+          0.8176204199258954,
+          0.8027995059695348,
+          0.6220666941128036
+        ],
+        "seed": 91009
+      }
+    },
+    {
+      "seed": 91010,
+      "learned": {
+        "meanDelivery": 220.925,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2108,
+        "reward": -88.61258770930739,
+        "orderSeconds": 8837,
+        "extraEdges": 4,
+        "utilization": [
+          0.8453510436432637,
+          0.8937381404174574,
+          0.7941176470588235
+        ],
+        "seed": 91010
+      },
+      "greedy": {
+        "meanDelivery": 225,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2209,
+        "reward": -90.32772337616196,
+        "orderSeconds": 9000,
+        "extraEdges": 4,
+        "utilization": [
+          0.5685830692621096,
+          0.6727025803531009,
+          0.8347668628338615
+        ],
+        "seed": 91010
+      },
+      "eta": {
+        "meanDelivery": 182.5,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2101,
+        "reward": -73.07358837824859,
+        "orderSeconds": 7300,
+        "extraEdges": 0,
+        "utilization": [
+          0.8557829604950024,
+          0.8072346501665874,
+          0.789148024750119
+        ],
+        "seed": 91010
+      },
+      "random": {
+        "meanDelivery": 321.775,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2661,
+        "reward": -128.95496829752685,
+        "orderSeconds": 12871,
+        "extraEdges": 0,
+        "utilization": [
+          0.6377301766253288,
+          0.9500187899285982,
+          0.49492671927846676
+        ],
+        "seed": 91010
+      }
+    },
+    {
+      "seed": 91011,
+      "learned": {
+        "meanDelivery": 250.275,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2414,
+        "reward": -100.32143143242358,
+        "orderSeconds": 10011,
+        "extraEdges": 2,
+        "utilization": [
+          0.8297431648715824,
+          0.6748135874067938,
+          0.7067108533554267
+        ],
+        "seed": 91011
+      },
+      "greedy": {
+        "meanDelivery": 257.225,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2670,
+        "reward": -103.3398318566563,
+        "orderSeconds": 10289,
+        "extraEdges": 10,
+        "utilization": [
+          0.5749063670411985,
+          0.4202247191011236,
+          0.7910112359550562
+        ],
+        "seed": 91011
+      },
+      "eta": {
+        "meanDelivery": 210.3,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2320,
+        "reward": -84.39674988865899,
+        "orderSeconds": 8412,
+        "extraEdges": 6,
+        "utilization": [
+          0.7603448275862069,
+          0.6797413793103448,
+          0.7456896551724138
+        ],
+        "seed": 91011
+      },
+      "random": {
+        "meanDelivery": 323.925,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2740,
+        "reward": -130.02627782463932,
+        "orderSeconds": 12957,
+        "extraEdges": 6,
+        "utilization": [
+          0.6452554744525547,
+          0.6777372262773723,
+          0.7204379562043796
+        ],
+        "seed": 91011
+      }
+    },
+    {
+      "seed": 91012,
+      "learned": {
+        "meanDelivery": 220.05,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2670,
+        "reward": -88.15415842043262,
+        "orderSeconds": 8802,
+        "extraEdges": 2,
+        "utilization": [
+          0.6850187265917603,
+          0.800374531835206,
+          0.701123595505618
+        ],
+        "seed": 91012
+      },
+      "greedy": {
+        "meanDelivery": 227.075,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2689,
+        "reward": -91.11516245214213,
+        "orderSeconds": 9083,
+        "extraEdges": 4,
+        "utilization": [
+          0.7378207512086278,
+          0.32056526589810336,
+          0.7872815172926738
+        ],
+        "seed": 91012
+      },
+      "eta": {
+        "meanDelivery": 204.7,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2626,
+        "reward": -82.02315203243005,
+        "orderSeconds": 8188,
+        "extraEdges": 2,
+        "utilization": [
+          0.6675552170601675,
+          0.682025894897182,
+          0.7882711348057883
+        ],
+        "seed": 91012
+      },
+      "random": {
+        "meanDelivery": 318.05,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2803,
+        "reward": -127.5026996542821,
+        "orderSeconds": 12722,
+        "extraEdges": 2,
+        "utilization": [
+          0.8669282911166607,
+          0.6817695326435962,
+          0.35925793792365324
+        ],
+        "seed": 91012
+      }
+    },
+    {
+      "seed": 91013,
+      "learned": {
+        "meanDelivery": 210.4,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 3121,
+        "reward": -84.3416817385955,
+        "orderSeconds": 8416,
+        "extraEdges": 2,
+        "utilization": [
+          0.5453380326818328,
+          0.6901634091637295,
+          0.5988465235501442
+        ],
+        "seed": 91013
+      },
+      "greedy": {
+        "meanDelivery": 175.425,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2839,
+        "reward": -70.65512962830697,
+        "orderSeconds": 7017,
+        "extraEdges": 6,
+        "utilization": [
+          0.42444522719267347,
+          0.6766467065868264,
+          0.6477632969355407
+        ],
+        "seed": 91013
+      },
+      "eta": {
+        "meanDelivery": 157.575,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2792,
+        "reward": -63.383628217925214,
+        "orderSeconds": 6303,
+        "extraEdges": 4,
+        "utilization": [
+          0.5114613180515759,
+          0.6980659025787965,
+          0.6987822349570201
+        ],
+        "seed": 91013
+      },
+      "random": {
+        "meanDelivery": 234.175,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 3191,
+        "reward": -94.51891234863999,
+        "orderSeconds": 9367,
+        "extraEdges": 16,
+        "utilization": [
+          0.5155123785647132,
+          0.7123158884362268,
+          0.6085866499529928
+        ],
+        "seed": 91013
+      }
+    },
+    {
+      "seed": 91014,
+      "learned": {
+        "meanDelivery": 202.325,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2598,
+        "reward": -81.35253066603953,
+        "orderSeconds": 8093,
+        "extraEdges": 8,
+        "utilization": [
+          0.7759815242494227,
+          0.6978444957659738,
+          0.560816012317167
+        ],
+        "seed": 91014
+      },
+      "greedy": {
+        "meanDelivery": 193.575,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2598,
+        "reward": -77.8014967570166,
+        "orderSeconds": 7743,
+        "extraEdges": 2,
+        "utilization": [
+          0.8810623556581986,
+          0.5796766743648961,
+          0.26212471131639725
+        ],
+        "seed": 91014
+      },
+      "eta": {
+        "meanDelivery": 137.525,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2598,
+        "reward": -55.347500921068146,
+        "orderSeconds": 5501,
+        "extraEdges": 8,
+        "utilization": [
+          0.6562740569668977,
+          0.5935334872979214,
+          0.672440338722094
+        ],
+        "seed": 91014
+      },
+      "random": {
+        "meanDelivery": 234.625,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2651,
+        "reward": -94.13850568243862,
+        "orderSeconds": 9385,
+        "extraEdges": 2,
+        "utilization": [
+          0.7268955111278763,
+          0.5352697095435685,
+          0.7265182949830252
+        ],
+        "seed": 91014
+      }
+    },
+    {
+      "seed": 91015,
+      "learned": {
+        "meanDelivery": 187.1,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2567,
+        "reward": -75.2350170397492,
+        "orderSeconds": 7484,
+        "extraEdges": 6,
+        "utilization": [
+          0.5629139072847682,
+          0.7452278924814959,
+          0.7537982080249318
+        ],
+        "seed": 91015
+      },
+      "greedy": {
+        "meanDelivery": 172.65,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2573,
+        "reward": -69.3663550544168,
+        "orderSeconds": 6906,
+        "extraEdges": 4,
+        "utilization": [
+          0.6129032258064516,
+          0.7038476486591527,
+          0.5464438398756316
+        ],
+        "seed": 91015
+      },
+      "eta": {
+        "meanDelivery": 142.075,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2545,
+        "reward": -57.130417717918434,
+        "orderSeconds": 5683,
+        "extraEdges": 4,
+        "utilization": [
+          0.6609037328094303,
+          0.5638506876227898,
+          0.7033398821218074
+        ],
+        "seed": 91015
+      },
+      "random": {
+        "meanDelivery": 230.075,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2929,
+        "reward": -92.29879773371968,
+        "orderSeconds": 9203,
+        "extraEdges": 4,
+        "utilization": [
+          0.7118470467736429,
+          0.5831341754865141,
+          0.5046090815978149
+        ],
+        "seed": 91015
+      }
+    },
+    {
+      "seed": 91016,
+      "learned": {
+        "meanDelivery": 177.875,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2696,
+        "reward": -71.52985338108697,
+        "orderSeconds": 7115,
+        "extraEdges": 8,
+        "utilization": [
+          0.7566765578635015,
+          0.7140207715133531,
+          0.6268545994065282
+        ],
+        "seed": 91016
+      },
+      "greedy": {
+        "meanDelivery": 225.225,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2751,
+        "reward": -90.66176939618266,
+        "orderSeconds": 9009,
+        "extraEdges": 8,
+        "utilization": [
+          0.3965830607051981,
+          0.8451472191930207,
+          0.5259905488913122
+        ],
+        "seed": 91016
+      },
+      "eta": {
+        "meanDelivery": 162.6,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2690,
+        "reward": -65.42939714377704,
+        "orderSeconds": 6504,
+        "extraEdges": 10,
+        "utilization": [
+          0.6074349442379182,
+          0.7286245353159851,
+          0.6862453531598512
+        ],
+        "seed": 91016
+      },
+      "random": {
+        "meanDelivery": 211.725,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2929,
+        "reward": -85.2543986978595,
+        "orderSeconds": 8469,
+        "extraEdges": 12,
+        "utilization": [
+          0.3933082963468761,
+          0.7883236599522021,
+          0.7422328439740525
+        ],
+        "seed": 91016
+      }
+    },
+    {
+      "seed": 91017,
+      "learned": {
+        "meanDelivery": 172.8,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 3000,
+        "reward": -69.41575310337429,
+        "orderSeconds": 6912,
+        "extraEdges": 4,
+        "utilization": [
+          0.5613333333333334,
+          0.5293333333333333,
+          0.7203333333333334
+        ],
+        "seed": 91017
+      },
+      "greedy": {
+        "meanDelivery": 178.95,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 3000,
+        "reward": -72.01998862298744,
+        "orderSeconds": 7158,
+        "extraEdges": 6,
+        "utilization": [
+          0.7383333333333333,
+          0.4096666666666667,
+          0.463
+        ],
+        "seed": 91017
+      },
+      "eta": {
+        "meanDelivery": 148,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 3000,
+        "reward": -59.566660343727584,
+        "orderSeconds": 5920,
+        "extraEdges": 8,
+        "utilization": [
+          0.5986666666666667,
+          0.5703333333333334,
+          0.576
+        ],
+        "seed": 91017
+      },
+      "random": {
+        "meanDelivery": 223.9,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 3000,
+        "reward": -90.07829706268778,
+        "orderSeconds": 8956,
+        "extraEdges": 6,
+        "utilization": [
+          0.8366666666666667,
+          0.41733333333333333,
+          0.496
+        ],
+        "seed": 91017
+      }
+    },
+    {
+      "seed": 91018,
+      "learned": {
+        "meanDelivery": 206.65,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2470,
+        "reward": -82.90884311903918,
+        "orderSeconds": 8266,
+        "extraEdges": 2,
+        "utilization": [
+          0.6153846153846154,
+          0.6502024291497975,
+          0.7963562753036437
+        ],
+        "seed": 91018
+      },
+      "greedy": {
+        "meanDelivery": 202.325,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2352,
+        "reward": -81.10344989116176,
+        "orderSeconds": 8093,
+        "extraEdges": 2,
+        "utilization": [
+          0.6675170068027211,
+          0.6462585034013606,
+          0.5829081632653061
+        ],
+        "seed": 91018
+      },
+      "eta": {
+        "meanDelivery": 189.625,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2365,
+        "reward": -76.00070543095667,
+        "orderSeconds": 7585,
+        "extraEdges": 0,
+        "utilization": [
+          0.7145877378435518,
+          0.6718816067653277,
+          0.6494714587737843
+        ],
+        "seed": 91018
+      },
+      "random": {
+        "meanDelivery": 306.675,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2881,
+        "reward": -123.0697821392757,
+        "orderSeconds": 12267,
+        "extraEdges": 4,
+        "utilization": [
+          0.7098229781325929,
+          0.5886844845539743,
+          0.6449149600833044
+        ],
+        "seed": 91018
+      }
+    },
+    {
+      "seed": 91019,
+      "learned": {
+        "meanDelivery": 177.7,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2525,
+        "reward": -71.27982026632148,
+        "orderSeconds": 7108,
+        "extraEdges": 4,
+        "utilization": [
+          0.7940594059405941,
+          0.7473267326732673,
+          0.6780198019801981
+        ],
+        "seed": 91019
+      },
+      "greedy": {
+        "meanDelivery": 185.825,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2588,
+        "reward": -74.5497256912067,
+        "orderSeconds": 7433,
+        "extraEdges": 2,
+        "utilization": [
+          0.8002318392581144,
+          0.6286707882534776,
+          0.5200927357032458
+        ],
+        "seed": 91019
+      },
+      "eta": {
+        "meanDelivery": 151.375,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2368,
+        "reward": -60.77178407870727,
+        "orderSeconds": 6055,
+        "extraEdges": 2,
+        "utilization": [
+          0.8695101351351351,
+          0.5983952702702703,
+          0.7124155405405406
+        ],
+        "seed": 91019
+      },
+      "random": {
+        "meanDelivery": 255.65,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2810,
+        "reward": -102.54239125379223,
+        "orderSeconds": 10226,
+        "extraEdges": 4,
+        "utilization": [
+          0.6131672597864769,
+          0.8103202846975089,
+          0.5715302491103202
+        ],
+        "seed": 91019
+      }
+    },
+    {
+      "seed": 91020,
+      "learned": {
+        "meanDelivery": 192.15,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2434,
+        "reward": -77.07920128714342,
+        "orderSeconds": 7686,
+        "extraEdges": 2,
+        "utilization": [
+          0.7990961380443714,
+          0.723911257189811,
+          0.6614626129827444
+        ],
+        "seed": 91020
+      },
+      "greedy": {
+        "meanDelivery": 208.775,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2458,
+        "reward": -83.72864722671399,
+        "orderSeconds": 8351,
+        "extraEdges": 2,
+        "utilization": [
+          0.595606183889341,
+          0.7620016273393002,
+          0.6354759967453214
+        ],
+        "seed": 91020
+      },
+      "eta": {
+        "meanDelivery": 163.475,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2412,
+        "reward": -65.48904250975757,
+        "orderSeconds": 6539,
+        "extraEdges": 0,
+        "utilization": [
+          0.7151741293532339,
+          0.7267827529021559,
+          0.7359038142620232
+        ],
+        "seed": 91020
+      },
+      "random": {
+        "meanDelivery": 362.85,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 3207,
+        "reward": -145.51845278863786,
+        "orderSeconds": 14514,
+        "extraEdges": 6,
+        "utilization": [
+          0.4695977549111319,
+          0.8285001559089492,
+          0.5017149984409105
+        ],
+        "seed": 91020
+      }
+    },
+    {
+      "seed": 91021,
+      "learned": {
+        "meanDelivery": 219.9,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2193,
+        "reward": -88.24467333750725,
+        "orderSeconds": 8796,
+        "extraEdges": 6,
+        "utilization": [
+          0.8258093935248518,
+          0.8996808025535795,
+          0.7099863201094391
+        ],
+        "seed": 91021
+      },
+      "greedy": {
+        "meanDelivery": 291.925,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2560,
+        "reward": -117.1469672075285,
+        "orderSeconds": 11677,
+        "extraEdges": 4,
+        "utilization": [
+          0.65234375,
+          0.32109375,
+          0.891796875
+        ],
+        "seed": 91021
+      },
+      "eta": {
+        "meanDelivery": 183.15,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2181,
+        "reward": -73.52995482536095,
+        "orderSeconds": 7326,
+        "extraEdges": 6,
+        "utilization": [
+          0.7950481430536451,
+          0.9092159559834938,
+          0.7753324163227877
+        ],
+        "seed": 91021
+      },
+      "random": {
+        "meanDelivery": 436.725,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2826,
+        "reward": -175.1695353166943,
+        "orderSeconds": 17469,
+        "extraEdges": 6,
+        "utilization": [
+          0.251238499646143,
+          0.9023354564755839,
+          0.8711960368011323
+        ],
+        "seed": 91021
+      }
+    },
+    {
+      "seed": 91022,
+      "learned": {
+        "meanDelivery": 203.925,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2507,
+        "reward": -81.7521644074899,
+        "orderSeconds": 8157,
+        "extraEdges": 4,
+        "utilization": [
+          0.5823693657758277,
+          0.7602712405265257,
+          0.6286398085360989
+        ],
+        "seed": 91022
+      },
+      "greedy": {
+        "meanDelivery": 222.75,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2445,
+        "reward": -89.35258541195687,
+        "orderSeconds": 8910,
+        "extraEdges": 2,
+        "utilization": [
+          0.8601226993865031,
+          0.37750511247443763,
+          0.5337423312883436
+        ],
+        "seed": 91022
+      },
+      "eta": {
+        "meanDelivery": 178.575,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2471,
+        "reward": -71.6432541410706,
+        "orderSeconds": 7143,
+        "extraEdges": 4,
+        "utilization": [
+          0.6361796843383246,
+          0.4658033184945366,
+          0.7689194658033185
+        ],
+        "seed": 91022
+      },
+      "random": {
+        "meanDelivery": 375.1,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2523,
+        "reward": -150.50894185689899,
+        "orderSeconds": 15004,
+        "extraEdges": 10,
+        "utilization": [
+          0.9397542608006342,
+          0.5953230281411018,
+          0.582639714625446
+        ],
+        "seed": 91022
+      }
+    },
+    {
+      "seed": 91023,
+      "learned": {
+        "meanDelivery": 158.725,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2566,
+        "reward": -63.85403748834757,
+        "orderSeconds": 6349,
+        "extraEdges": 8,
+        "utilization": [
+          0.7155105222135619,
+          0.7755261106780982,
+          0.5853468433359315
+        ],
+        "seed": 91023
+      },
+      "greedy": {
+        "meanDelivery": 172.5,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2686,
+        "reward": -69.26223078420449,
+        "orderSeconds": 6900,
+        "extraEdges": 4,
+        "utilization": [
+          0.6068503350707372,
+          0.5361131794489948,
+          0.6511541325390916
+        ],
+        "seed": 91023
+      },
+      "eta": {
+        "meanDelivery": 138.925,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2606,
+        "reward": -55.835269782179765,
+        "orderSeconds": 5557,
+        "extraEdges": 6,
+        "utilization": [
+          0.6588641596316194,
+          0.6465848042977743,
+          0.6323867996930161
+        ],
+        "seed": 91023
+      },
+      "random": {
+        "meanDelivery": 231.8,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2849,
+        "reward": -93.08829158911102,
+        "orderSeconds": 9272,
+        "extraEdges": 6,
+        "utilization": [
+          0.6402246402246402,
+          0.7686907686907687,
+          0.6177606177606177
+        ],
+        "seed": 91023
+      }
+    },
+    {
+      "seed": 91024,
+      "learned": {
+        "meanDelivery": 218.075,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2162,
+        "reward": -87.44606378559548,
+        "orderSeconds": 8723,
+        "extraEdges": 4,
+        "utilization": [
+          0.8390379278445883,
+          0.7617946345975948,
+          0.8686401480111008
+        ],
+        "seed": 91024
+      },
+      "greedy": {
+        "meanDelivery": 246.25,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2242,
+        "reward": -98.81815616876625,
+        "orderSeconds": 9850,
+        "extraEdges": 4,
+        "utilization": [
+          0.5432649420160571,
+          0.7016057091882248,
+          0.855486173059768
+        ],
+        "seed": 91024
+      },
+      "eta": {
+        "meanDelivery": 189.85,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2143,
+        "reward": -76.1863822746869,
+        "orderSeconds": 7594,
+        "extraEdges": 4,
+        "utilization": [
+          0.8096126924871675,
+          0.7988800746616892,
+          0.891740550629958
+        ],
+        "seed": 91024
+      },
+      "random": {
+        "meanDelivery": 377.5,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2659,
+        "reward": -151.46085089504192,
+        "orderSeconds": 15100,
+        "extraEdges": 8,
+        "utilization": [
+          0.4298608499435878,
+          0.8176006017299736,
+          0.8867995487025198
+        ],
+        "seed": 91024
+      }
+    },
+    {
+      "seed": 91025,
+      "learned": {
+        "meanDelivery": 168.025,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2694,
+        "reward": -67.36344301950584,
+        "orderSeconds": 6721,
+        "extraEdges": 0,
+        "utilization": [
+          0.6985894580549369,
+          0.6035634743875279,
+          0.5334075723830735
+        ],
+        "seed": 91025
+      },
+      "greedy": {
+        "meanDelivery": 184.45,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2694,
+        "reward": -74.09033018085768,
+        "orderSeconds": 7378,
+        "extraEdges": 2,
+        "utilization": [
+          0.33667409057164066,
+          0.5538233110616184,
+          0.7305122494432071
+        ],
+        "seed": 91025
+      },
+      "eta": {
+        "meanDelivery": 143.225,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2694,
+        "reward": -57.472016106116115,
+        "orderSeconds": 5729,
+        "extraEdges": 0,
+        "utilization": [
+          0.6778025241276912,
+          0.5983667409057164,
+          0.540460282108389
+        ],
+        "seed": 91025
+      },
+      "random": {
+        "meanDelivery": 319.425,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 3164,
+        "reward": -128.08947607388018,
+        "orderSeconds": 12777,
+        "extraEdges": 2,
+        "utilization": [
+          0.7370417193426043,
+          0.5910240202275601,
+          0.31510745891276865
+        ],
+        "seed": 91025
+      }
+    },
+    {
+      "seed": 91026,
+      "learned": {
+        "meanDelivery": 182.8,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2330,
+        "reward": -73.21201551509671,
+        "orderSeconds": 7312,
+        "extraEdges": 0,
+        "utilization": [
+          0.7446351931330472,
+          0.7244635193133048,
+          0.7476394849785408
+        ],
+        "seed": 91026
+      },
+      "greedy": {
+        "meanDelivery": 178.075,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2504,
+        "reward": -71.42341249090688,
+        "orderSeconds": 7123,
+        "extraEdges": 0,
+        "utilization": [
+          0.6765175718849841,
+          0.4253194888178914,
+          0.722444089456869
+        ],
+        "seed": 91026
+      },
+      "eta": {
+        "meanDelivery": 158.85,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2270,
+        "reward": -63.64935768755335,
+        "orderSeconds": 6354,
+        "extraEdges": 0,
+        "utilization": [
+          0.7405286343612335,
+          0.7317180616740088,
+          0.7449339207048458
+        ],
+        "seed": 91026
+      },
+      "random": {
+        "meanDelivery": 204.425,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2380,
+        "reward": -82.08972607645923,
+        "orderSeconds": 8177,
+        "extraEdges": 0,
+        "utilization": [
+          0.915126050420168,
+          0.8987394957983194,
+          0.44201680672268906
+        ],
+        "seed": 91026
+      }
+    },
+    {
+      "seed": 91027,
+      "learned": {
+        "meanDelivery": 168.575,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2481,
+        "reward": -67.53052145705827,
+        "orderSeconds": 6743,
+        "extraEdges": 0,
+        "utilization": [
+          0.7202740830310359,
+          0.7166465135026199,
+          0.7380088673921805
+        ],
+        "seed": 91027
+      },
+      "greedy": {
+        "meanDelivery": 188.85,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2763,
+        "reward": -75.69314096178331,
+        "orderSeconds": 7554,
+        "extraEdges": 0,
+        "utilization": [
+          0.4549402823018458,
+          0.504885993485342,
+          0.7499095186391603
+        ],
+        "seed": 91027
+      },
+      "eta": {
+        "meanDelivery": 135.2,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2458,
+        "reward": -54.201685164689145,
+        "orderSeconds": 5408,
+        "extraEdges": 0,
+        "utilization": [
+          0.6391375101708706,
+          0.724979658258747,
+          0.6643612693246542
+        ],
+        "seed": 91027
+      },
+      "random": {
+        "meanDelivery": 211.375,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2582,
+        "reward": -84.80384359564854,
+        "orderSeconds": 8455,
+        "extraEdges": 0,
+        "utilization": [
+          0.5515104570100697,
+          0.7079783113865221,
+          0.8233927188226181
+        ],
+        "seed": 91027
+      }
+    },
+    {
+      "seed": 91028,
+      "learned": {
+        "meanDelivery": 199.25,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2326,
+        "reward": -79.9141718724461,
+        "orderSeconds": 7970,
+        "extraEdges": 4,
+        "utilization": [
+          0.7730008598452278,
+          0.8650042992261393,
+          0.7506448839208942
+        ],
+        "seed": 91028
+      },
+      "greedy": {
+        "meanDelivery": 228.55,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2270,
+        "reward": -91.75468973248792,
+        "orderSeconds": 9142,
+        "extraEdges": 4,
+        "utilization": [
+          0.9,
+          0.5674008810572687,
+          0.7938325991189428
+        ],
+        "seed": 91028
+      },
+      "eta": {
+        "meanDelivery": 186.575,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2198,
+        "reward": -74.86537714298503,
+        "orderSeconds": 7463,
+        "extraEdges": 4,
+        "utilization": [
+          0.8462238398544131,
+          0.8867151956323931,
+          0.7666060054595086
+        ],
+        "seed": 91028
+      },
+      "random": {
+        "meanDelivery": 379,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2740,
+        "reward": -152.0820120790388,
+        "orderSeconds": 15160,
+        "extraEdges": 6,
+        "utilization": [
+          0.6868613138686132,
+          1,
+          0.36313868613138683
+        ],
+        "seed": 91028
+      }
+    },
+    {
+      "seed": 91029,
+      "learned": {
+        "meanDelivery": 210.3,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2647,
+        "reward": -84.36561849715628,
+        "orderSeconds": 8412,
+        "extraEdges": 2,
+        "utilization": [
+          0.6985266339251983,
+          0.6709482432942955,
+          0.8039289761994711
+        ],
+        "seed": 91029
+      },
+      "greedy": {
+        "meanDelivery": 232.9,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2647,
+        "reward": -93.45261553687229,
+        "orderSeconds": 9316,
+        "extraEdges": 2,
+        "utilization": [
+          0.8564412542500944,
+          0.45145447676615036,
+          0.6055912353607857
+        ],
+        "seed": 91029
+      },
+      "eta": {
+        "meanDelivery": 171.7,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2647,
+        "reward": -69.05283197009042,
+        "orderSeconds": 6868,
+        "extraEdges": 6,
+        "utilization": [
+          0.8012844729882886,
+          0.5364563656970155,
+          0.7257272383830752
+        ],
+        "seed": 91029
+      },
+      "random": {
+        "meanDelivery": 380.5,
+        "delivered": 40,
+        "totalOrders": 40,
+        "time": 2679,
+        "reward": -152.50610012450554,
+        "orderSeconds": 15220,
+        "extraEdges": 4,
+        "utilization": [
+          0.7723030981709593,
+          0.5535647629712579,
+          0.8745800671892497
+        ],
+        "seed": 91029
+      }
+    }
+  ]
+}
